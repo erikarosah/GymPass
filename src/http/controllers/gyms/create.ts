@@ -5,13 +5,13 @@ import { z } from 'zod';
 export async function create(request: FastifyRequest, reply: FastifyReply) {
     const createGymBodySchema = z.object({
         title: z.string(),
-        description: z.null().nullable(),
-        phone: z.null().nullable(),
-        latitude: z.number().refine(value => {
+        description: z.string().nullable(),
+        phone: z.string().nullable(),
+        latitude: z.number().refine((value) => {
             return Math.abs(value) <= 90;
         }),
-        longitude: z.number().refine(value => {
-            return Math.abs(value) <= 100;
+        longitude: z.number().refine((value) => {
+            return Math.abs(value) <= 180;
         })
     });
 
@@ -28,7 +28,5 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
         longitude
     });
 
-    reply.status(201).send();
-
-    
+    reply.status(201).send();    
 }  
